@@ -20,3 +20,54 @@ function insertName() {
     });
 }
 insertName(); //run the function
+
+function readQuote() {
+    db.collection("quotes").doc("tuesday")                                                    //name of the collection and documents should matach excatly with what you have in Firestore
+      .onSnapshot(tuesdayDoc => {                                                               //arrow notation
+           console.log("current document data: " + tuesdayDoc.data());                          //.data() returns data object
+           document.getElementById("quote-goes-here").innerHTML = tuesdayDoc.data().quote;      //using javascript to display the data on the right place
+           
+           //Here are other ways to access key:value data fields
+           //$('#quote-goes-here').text(tuesdayDoc.data().quote);                                       //using jquery object dot notation
+           //$("#quote-goes-here").text(tuesdayDoc.data()["quote"]);                                    //using json object indexing
+      })
+}
+readQuote()        //calling the function
+
+
+function writeHikes() {
+    //define a variable for the collection you want to create in Firestore to populate data
+    var hikesRef = db.collection("hikes");
+
+    hikesRef.add({
+        code:"BBY01",
+        name: "Chilkoot Trail",    //replace with your own city?
+        city: "Alaska",
+        province: "Bennet",
+        level: "easy",
+        length: "10",
+        details: "Elmo goes here regularly",
+        last_updated: firebase.firestore.FieldValue.serverTimestamp()  
+    });
+    hikesRef.add({
+        code:"AM01",
+        name: "Flattop",    //replace with your own city?
+        city: "Alaska",
+        province: "Anchorage",
+        level: "moderate",
+        length: "10.5",
+        details: "Elmo goes here regularly",
+        last_updated: firebase.firestore.FieldValue.serverTimestamp()
+   });
+   hikesRef.add({
+        code:"NV01",
+        name: "harding-icefield",    //replace with your own city?
+        city: "Alaska",
+        province: "Seward",
+        level: "hard",
+        length: "8.2",
+        details: "Elmo goes here regularly",
+        last_updated: firebase.firestore.Timestamp.fromDate(new Date("March 10, 2022"))
+   });
+}
+writeHikes()
